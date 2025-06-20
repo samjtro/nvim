@@ -269,8 +269,9 @@ return {
         provider_options = {
           openai_compatible = {
             model = 'mistralai/devstral-small:free',
-            system = 'You are a helpful assistant',
-            few_shots = 5,
+            system = require('minuet.config').default_system,
+            few_shots = require('minuet.config').default_few_shots,
+            chat_input = require('minuet.config').default_chat_input,
             end_point = 'https://openrouter.ai/api/v1/chat/completions',
             api_key = function()
               return vim.fn.getenv('OPENROUTER_API_KEY')
