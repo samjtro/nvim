@@ -6,6 +6,7 @@ Based on kickstart.nvim with transparency, enhanced plugins, and Claude Code int
 
 - 🎨 **Transparent Theme**: Tokyo Night with full transparency
 - 🤖 **Claude Code Integration**: Enhanced AI coding assistant
+- 🧠 **Avante.nvim**: AI-powered code completion and assistance using Claude Sonnet
 - 📁 **File Management**: Neo-tree file explorer
 - 🔍 **Fuzzy Finding**: Telescope for files, grep, and more
 - 📝 **LSP Support**: Language servers with Mason
@@ -24,6 +25,11 @@ Based on kickstart.nvim with transparency, enhanced plugins, and Claude Code int
 - `<leader>cc` - Toggle Claude Code
 - `<leader>cC` - Continue previous conversation
 - `<leader>cV` - Verbose mode
+
+### Avante.nvim AI Assistant
+- `<leader>aa` - Ask AI for assistance
+- `<leader>ae` - Edit code with AI
+- `<leader>ar` - Refresh AI suggestions
 
 ### Floating Terminal
 - `<F1>` - Toggle floating terminal
@@ -71,6 +77,11 @@ This configuration extends kickstart.nvim with transparency, enhanced plugins, a
 - `<leader>cc` - Toggle Claude Code
 - `<leader>cC` - Continue previous conversation
 - `<leader>cV` - Verbose mode
+
+### Avante.nvim AI Assistant
+- `<leader>aa` - Ask AI for assistance
+- `<leader>ae` - Edit code with AI
+- `<leader>ar` - Refresh AI suggestions
 
 ### LSP (Language Server)
 - `gd` - Go to definition
@@ -208,6 +219,19 @@ nvim
 
 That's it! Lazy will install all the plugins you have. Use `:Lazy` to view
 the current plugin status. Hit `q` to close the window.
+
+### AI Integration Setup
+
+Avante.nvim requires setting the `ANTHROPIC_API_KEY` environment variable to enable AI-powered code assistance:
+
+1. Get your API key from [Anthropic Console](https://console.anthropic.com/)
+2. Set the environment variable in your shell configuration:
+   ```bash
+   export ANTHROPIC_API_KEY="your-api-key-here"
+   ```
+3. Add this to your `~/.bashrc`, `~/.zshrc`, or equivalent to make it persistent
+
+The plugin uses Claude 3.5 Sonnet for intelligent code suggestions, refactoring, and AI-assisted editing.
 
 #### Read The Friendly Documentation
 

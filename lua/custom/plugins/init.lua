@@ -4,56 +4,6 @@
 -- See the kickstart.nvim README for more information
 
 return {
-  -- Claude Code integration
-  {
-    'greggh/claude-code.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    config = function()
-      require('claude-code').setup {
-        window = {
-          split_ratio = 0.3,
-          position = 'botright',
-          enter_insert = true,
-          hide_numbers = true,
-          hide_signcolumn = true,
-        },
-        refresh = {
-          enable = true,
-          updatetime = 100,
-          timer_interval = 1000,
-          show_notifications = true,
-        },
-        git = {
-          use_git_root = true,
-        },
-        command = 'claude',
-        command_variants = {
-          continue = '--continue',
-          resume = '--resume',
-          verbose = '--verbose',
-        },
-        keymaps = {
-          toggle = {
-            normal = '<C-,>',
-            terminal = '<C-,>',
-            variants = {
-              continue = '<leader>cC',
-              verbose = '<leader>cV',
-            },
-          },
-          window_navigation = true,
-          scrolling = true,
-        },
-      }
-    end,
-    keys = {
-      { '<C-,>', '<cmd>ClaudeCode<cr>', desc = 'Toggle Claude Code' },
-      { '<leader>cc', '<cmd>ClaudeCode<cr>', desc = 'Toggle Claude Code' },
-      { '<leader>cC', '<cmd>ClaudeCodeContinue<cr>', desc = 'Claude Code Continue' },
-      { '<leader>cV', '<cmd>ClaudeCodeVerbose<cr>', desc = 'Claude Code Verbose' },
-    },
-  },
-
   -- Additional useful plugins for development
   {
     'windwp/nvim-ts-autotag',
@@ -250,5 +200,113 @@ return {
         extensions = {},
       }
     end,
+  },
+
+  -- Git graph visualization
+  {
+    'isakbm/gitgraph.nvim',
+    dependencies = { 'sindrets/diffview.nvim' },
+    opts = {
+      symbols = {
+        merge_commit = 'M',
+        commit = '*',
+        merge_commit_end = 'M',
+        commit_end = '*',
+
+        -- Advanced symbols
+        GVER = '│',
+        GHOR = '─',
+        GCLD = '╮',
+        GCRD = '╭',
+        GCLU = '╯',
+        GCRU = '╰',
+        GLRU = '┴',
+        GLRD = '┬',
+        GLUD = '┤',
+        GRUD = '├',
+        GFORKU = '┼',
+        GFORKD = '┼',
+        GRUDCD = '├',
+        GRUDCU = '├',
+        GLUDCD = '┤',
+        GLUDCU = '┤',
+        GLRDCL = '┬',
+        GLRDCR = '┬',
+        GLRUCL = '┴',
+        GLRUCR = '┴',
+      },
+      format = {
+        timestamp = '%H:%M:%S %d-%m-%Y',
+        fields = { 'hash', 'timestamp', 'author', 'branch_name', 'tag' },
+      },
+      hooks = {
+        on_select_commit = function(commit)
+          print('selected commit:', commit.hash)
+        end,
+        on_select_range_commit = function(from, to)
+          print('selected range:', from.hash, to.hash)
+        end,
+      },
+    },
+    keys = {
+      {
+        '<leader>gl',
+        function()
+          require('gitgraph').draw({}, { all = true, max_count = 5000 })
+        end,
+        desc = 'GitGraph - draw',
+      },
+    },
+  },
+
+  -- Minuet AI - AI-powered code completion
+  {
+    'milanglacier/minuet-ai.nvim',
+    config = function()
+      require('minuet').setup {
+        -- Use OpenRouter with Mistral's devstral-small:free model
+        provider = 'openai_compatible',
+        provider_options = {
+          openai_compatible = {
+            model = 'mistralai/devstral-small:free',
+            system = 'You are a helpful assistant',
+            few_shots = 5,
+            end_point = 'https://openrouter.ai/api/v1/chat/completions',
+            api_key = function()
+              return vim.fn.getenv('OPENROUTER_API_KEY')
+            end,
+            name = 'OpenRouter',
+            optional = {
+              ['HTTP-Referer'] = 'https://github.com/milanglacier/minuet-ai.nvim',
+              ['X-Title'] = 'Minuet AI for Neovim',
+            },
+          },
+        },
+        -- Completion settings
+        throttle = 500, -- Throttle time in milliseconds
+        minimum_prefix_length = 2, -- Minimum characters before triggering completion
+        debounce = 400, -- Debounce time in milliseconds
+        request_timeout = 3, -- Request timeout in seconds
+        -- Window settings
+        window = {
+          max_height = 10,
+          max_width = 0.45,
+          border = 'rounded',
+          winblend = 0,
+        },
+        -- Virtual text settings (for inline suggestions)
+        virtual_text = {
+          enabled = true,
+          hl_group = 'Comment',
+        },
+        -- Accept settings
+        auto_trigger_context_length = 30, -- Characters of context to include
+        -- Notification settings
+        notify = 'verbose', -- 'verbose', 'warn', 'error', 'off'
+      }
+    end,
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
   },
 }
